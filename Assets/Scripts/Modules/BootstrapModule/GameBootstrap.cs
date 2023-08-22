@@ -1,10 +1,11 @@
+using Modules.UtilityModule.Debug;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UtilitiesModule.Service;
 
-namespace UtilitiesModule.Bootstrap
+namespace BootstrapModule
 {
-    public static class GameBootstrap
+    public class GameBootstrap
     {
         private const string TARGET_LOAD_SCENE = "Game";
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]

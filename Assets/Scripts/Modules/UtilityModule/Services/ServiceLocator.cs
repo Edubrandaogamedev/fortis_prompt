@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Modules.UtilityModule.Debug;
 using UnityEngine;
 
 namespace UtilitiesModule.Service
@@ -21,12 +22,24 @@ namespace UtilitiesModule.Service
         public T Get<T>() where T : IService, new()
         {
             Type serviceConcreteType = typeof(T);
+
             if (!_services.ContainsKey(serviceConcreteType))
             {
                 Debug.LogWarning($"Attempted to get the {serviceConcreteType} but it's not binded.");
                 return default;
             }
             return (T)_services[serviceConcreteType];
+        }
+
+        public void CreateAndBindService<T>() where T: IService, new()
+        {
+            Type serviceConcreteType = typeof(T);
+            if (_services.ContainsKey(serviceConcreteType))
+            {
+                Debug.LogWarning($"Attempted to bind the {serviceConcreteType} twice.");
+                return;
+            }
+            _services[typeof(T)] = new T();
         }
         
         public void BindService<T>(T service) where T : IService
@@ -37,7 +50,7 @@ namespace UtilitiesModule.Service
                 Debug.LogWarning($"Attempted to bind the {service} twice.");
                 return;
             }
-            _services.Add(serviceConcreteType, service);
+            _services[typeof(T)] = service;
             
         }
 

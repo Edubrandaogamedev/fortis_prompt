@@ -1,3 +1,4 @@
+using MovementModule;
 using UnityEngine;
 using UtilityModule.Service;
 
@@ -9,6 +10,7 @@ namespace BootstrapModule
         public static void Initialize()
         {
             ServiceLocator.Initialize();
+            ServiceLocator.Instance.BindService(new MovementService());
         }
     }
 }

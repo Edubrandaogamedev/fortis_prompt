@@ -1,7 +1,5 @@
-using System;
-using System.Collections;
 using UnityEngine;
-using UtilitiesModule.Service;
+using UtilityModule.Service;
 
 namespace SpawnModule
 {
@@ -37,7 +35,7 @@ namespace SpawnModule
         {
             if (_currentTime >= _interval)
             {
-                _spawnService.SpawnUnit(_unitKey, transform.position);
+                //_spawnService.SpawnUnit(_unitKey, transform.position);
                 _currentTime = 0;
             }
         }

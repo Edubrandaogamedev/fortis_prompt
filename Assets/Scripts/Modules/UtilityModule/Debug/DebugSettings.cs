@@ -1,7 +1,6 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Modules.UtilityModule.Debug
+namespace UtilityModule.Debug
 {
     [CreateAssetMenu(menuName = "Debug/Settings", fileName = "NewDebugSettings")]
     public class DebugSettings : ScriptableObject

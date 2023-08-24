@@ -1,8 +1,8 @@
 ﻿using System;
 using UnityEngine;
-using UtilitiesModule.Service;
+using UtilityModule.Service;
 
-namespace Modules.UtilityModule.Debug
+namespace UtilityModule.Debug
 {
     [Flags]
     public enum DebugLogType

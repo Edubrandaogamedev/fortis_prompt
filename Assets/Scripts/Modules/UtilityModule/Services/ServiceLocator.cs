@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using Modules.UtilityModule.Debug;
-using UnityEngine;
 
-namespace UtilitiesModule.Service
+namespace UtilityModule.Service
 {
     public class ServiceLocator
     {
@@ -25,7 +23,7 @@ namespace UtilitiesModule.Service
 
             if (!_services.ContainsKey(serviceConcreteType))
             {
-                Debug.LogWarning($"Attempted to get the {serviceConcreteType} but it's not binded.");
+                UnityEngine.Debug.LogWarning($"Attempted to get the {serviceConcreteType} but it's not binded.");
                 return default;
             }
             return (T)_services[serviceConcreteType];
@@ -36,7 +34,7 @@ namespace UtilitiesModule.Service
             Type serviceConcreteType = typeof(T);
             if (_services.ContainsKey(serviceConcreteType))
             {
-                Debug.LogWarning($"Attempted to bind the {serviceConcreteType} twice.");
+                UnityEngine.Debug.LogWarning($"Attempted to bind the {serviceConcreteType} twice.");
                 return;
             }
             _services[typeof(T)] = new T();
@@ -47,7 +45,7 @@ namespace UtilitiesModule.Service
             Type serviceConcreteType = typeof(T);
             if (_services.ContainsKey(serviceConcreteType))
             {
-                Debug.LogWarning($"Attempted to bind the {service} twice.");
+                UnityEngine.Debug.LogWarning($"Attempted to bind the {service} twice.");
                 return;
             }
             _services[typeof(T)] = service;
@@ -59,7 +57,7 @@ namespace UtilitiesModule.Service
             Type serviceConcreteType = typeof(T); 
             if (!_services.ContainsKey(serviceConcreteType))
             {
-                Debug.LogWarning($"Attempted to unbind the {service} but is not registered.");
+                UnityEngine.Debug.LogWarning($"Attempted to unbind the {service} but is not registered.");
                 return;
             }
             _services.Remove(serviceConcreteType);

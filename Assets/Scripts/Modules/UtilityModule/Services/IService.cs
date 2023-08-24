@@ -1,4 +1,4 @@
-﻿namespace UtilitiesModule.Service
+﻿namespace UtilityModule.Service
 {
     public interface IService
     {

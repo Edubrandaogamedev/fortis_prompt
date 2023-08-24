@@ -1,29 +1,25 @@
-using System;
-using System.Collections.Generic;
 using CharacterModule;
-using Modules.UtilityModule.Debug;
-using SpawnModule;
 using UnityEngine;
-using UtilitiesModule.Service;
+using UtilityModule.Pooling;
+using UtilityModule.Service;
 
-public class SpawnService : MonoBehaviour,IService
+namespace SpawnModule
 {
-    [SerializeField] 
-    private SpawnableUnitData _data;
-
-
-    private void Awake()
+    public class SpawnService : MonoBehaviour,IService
     {
-        ServiceLocator.Instance.BindService(this);
-    }
+        [SerializeField] 
+        private PoolManager _poolManager;
 
-    public UnitController SpawnUnit(string unitKey, Vector3 location, Quaternion rotation = default, Transform parent = null)
-    {
-        UnitController unit = _data.UnitPrefabs.Find(unit => unit.Key == unitKey);
-        if (unit == null)
+
+        private void Awake()
         {
-            ServiceLocator.Instance.Get<DebugService>().ShowLog("{0} not found, check if the prefab has the correct key or if the unit is on data",DebugLogType.Warning,unitKey);
+            ServiceLocator.Instance.BindService(this);
+            _poolManager.Initialize();
         }
-        return parent == null ? Instantiate(unit, location, rotation) : Instantiate(unit, location, rotation, parent);
+
+        public UnitController SpawnUnit(string unitKey, Vector3 location, Quaternion rotation = default, Transform parent = null)
+        {
+            return _poolManager.Spawn<UnitController>(unitKey, parent);
+        }
     }
 }

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using CharacterModule;
 using UnityEngine;
 using UtilityModule.Service;
 
@@ -12,9 +14,10 @@ namespace SpawnModule
         
         private SpawnService _spawnService;
 
+        private HashSet<UnitController> _spawnedUnits = new();
         private bool _canSpawn;
         private float _currentTime;
-        
+
         public void Start()
         {
             _spawnService = ServiceLocator.Instance.Get<SpawnService>();
@@ -35,7 +38,8 @@ namespace SpawnModule
         {
             if (_currentTime >= _interval)
             {
-                //_spawnService.SpawnUnit(_unitKey, transform.position);
+                UnitController spawnedUnit = _spawnService.SpawnUnit(_unitKey, transform.position);
+                _spawnedUnits.Add(spawnedUnit);
                 _currentTime = 0;
             }
         }

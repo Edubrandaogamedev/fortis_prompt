@@ -19,7 +19,7 @@ namespace SpawnModule
 
         public UnitController SpawnUnit(string unitKey, Vector3 location, Quaternion rotation = default, Transform parent = null)
         {
-            return _poolManager.Spawn<UnitController>(unitKey, parent);
+            return _poolManager.Spawn<UnitController>(unitKey, location, rotation, parent);
         }
     }
 }

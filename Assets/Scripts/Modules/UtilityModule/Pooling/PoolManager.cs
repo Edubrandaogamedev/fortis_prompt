@@ -75,7 +75,7 @@ namespace UtilityModule.Pooling
 	        OnRelease?.Invoke();
         }
         
-        public T Spawn<T>(string key, Transform parent = null) where T : Component
+        public T Spawn<T>(string key, Vector3 location = default, Quaternion rotation = default, Transform parent = null) where T : Component
         {
 	        if (!_pools.TryGetValue(key, out IObjectPool<PoolableItem> objectPool))
 	        {
@@ -93,6 +93,8 @@ namespace UtilityModule.Pooling
 	        }
 	        
 	        PoolableItem pooledItem = objectPool.Get();
+	        pooledItem.transform.position = location;
+	        pooledItem.transform.rotation = rotation;
 	        if (parent)
 	        {
 		        pooledItem.transform.SetParent(parent);

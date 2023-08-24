@@ -36,6 +36,7 @@ namespace UtilityModule.Pooling
             {
                 return;
             }
+            UnityEngine.Debug.Log("release object " + this.name);
             _pool.Release(this);
         }
 

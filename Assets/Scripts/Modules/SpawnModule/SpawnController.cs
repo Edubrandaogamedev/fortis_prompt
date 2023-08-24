@@ -18,7 +18,7 @@ namespace SpawnModule
         private bool _canSpawn;
         private float _currentTime;
 
-        public void Start()
+        private void Start()
         {
             _spawnService = ServiceLocator.Instance.Get<SpawnService>();
             _canSpawn = true;
@@ -40,8 +40,20 @@ namespace SpawnModule
             {
                 UnitController spawnedUnit = _spawnService.SpawnUnit(_unitKey, transform.position);
                 _spawnedUnits.Add(spawnedUnit);
+                spawnedUnit.OnUnitSpawn += BornUnit;
+                spawnedUnit.SetInvincibilityStat();
                 _currentTime = 0;
             }
         }
+        
+        private void BornUnit(UnitController unit)
+        {
+            UnitController spawnedUnit = _spawnService.SpawnUnit(_unitKey, unit.transform.position);
+            _spawnedUnits.Add(spawnedUnit);
+            spawnedUnit.OnUnitSpawn += BornUnit;
+            spawnedUnit.SetInvincibilityStat();
+        }
+
+        
     }
 }

@@ -10,8 +10,8 @@ namespace UtilityModule.Pooling
     public class PoolManager : MonoBehaviour
     {
 	    public static int DEFAULT_POOL_COUNT = 1;
-        
-        [SerializeField] 
+
+	    [SerializeField] 
         private List<PoolableItem> _poolableItems = new();
         
         [SerializeField] 
@@ -112,8 +112,7 @@ namespace UtilityModule.Pooling
 	        }
 	        CreatePoolSubsection(item.Key);
 	        _pools.Add(item.Key, new ObjectPool<PoolableItem>(() => CreatePoolableItem(item), OnTakeFromPool, OnReturnedToPool, OnDestroyPoolObject, 
-			        _collectionChecks, item.PoolCount, _maxPoolSize
-		        )
+			        _collectionChecks, item.PoolCount, _maxPoolSize)
 	        );
         }
         
@@ -150,6 +149,7 @@ namespace UtilityModule.Pooling
 
         private void OnReturnedToPool(PoolableItem itemToReturn)
         {
+	        UnityEngine.Debug.Log("item returned");
 	        itemToReturn.transform.SetParent(_poolsSubContext[itemToReturn.Key].transform);
 	        itemToReturn.SetActive(false);
         }

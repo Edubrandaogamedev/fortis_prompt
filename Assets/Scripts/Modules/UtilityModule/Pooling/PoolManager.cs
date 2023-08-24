@@ -23,7 +23,6 @@ namespace UtilityModule.Pooling
         private Dictionary<string, IObjectPool<PoolableItem>> _pools;
         private readonly Dictionary<string, GameObject> _poolsSubContext = new();
         private readonly Dictionary<PoolableItem, List<Component>> _cachedPooledComponent = new();
-        
 
         public bool IsInitialized { get; private set; }
 
@@ -80,6 +79,16 @@ namespace UtilityModule.Pooling
         {
 	        if (!_pools.TryGetValue(key, out IObjectPool<PoolableItem> objectPool))
 	        {
+		        DebugService debugService = ServiceLocator.Instance.Get<DebugService>();
+		        if (!IsInitialized)
+		        {
+			        debugService.ShowLog("Initialize Pool Manager first",DebugLogType.Error);
+		        }
+		        else
+		        {
+			        debugService.ShowLog("Tried to spawn {0} but the pool was not created. Try to check if the {0} prefab is registered on pool manager object", DebugLogType.Error,key);
+		        }
+		        
 		        return null;
 	        }
 	        
@@ -149,6 +158,7 @@ namespace UtilityModule.Pooling
 	        Destroy(itemToDestroy.gameObject);
 	        
         }
+        
         private T GetCachedComponent<T>(PoolableItem item) where T : Component
         {
 	        if (!_cachedPooledComponent.ContainsKey(item))
@@ -167,7 +177,7 @@ namespace UtilityModule.Pooling
 		    _cachedPooledComponent[item].Add(component);
 		    return component;
         }
-
+        
         private void ClearCachedInformation(bool garbageCollect = true)
         {
 	        _cachedPooledComponent.Clear();

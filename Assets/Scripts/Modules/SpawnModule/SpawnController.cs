@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using CharacterModule;
+using UnitModule;
 using UnityEngine;
 using UtilityModule.Service;
 
@@ -17,6 +17,8 @@ namespace SpawnModule
         private HashSet<UnitController> _spawnedUnits = new();
         private bool _canSpawn;
         private float _currentTime;
+
+        public string Key => _unitKey;
 
         private void Start()
         {
@@ -54,6 +56,9 @@ namespace SpawnModule
             spawnedUnit.SetInvincibilityStat();
         }
 
-        
+        public void SetInterval(float newInterval)
+        {
+            _interval = newInterval;
+        }
     }
 }

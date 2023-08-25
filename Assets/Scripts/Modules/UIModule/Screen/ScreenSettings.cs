@@ -14,6 +14,9 @@ public class ScreenSettings : MonoBehaviour
     
     [SerializeField] 
     private Animator _animator;
+
+    [SerializeField] 
+    private GameObject _fadeScreen;
     
     [SerializeField] 
     private Button _toggleScreenButton;
@@ -97,9 +100,10 @@ public class ScreenSettings : MonoBehaviour
     {
         DoScreenAnimation();
         IsOpen = !IsOpen;
+        _fadeScreen.SetActive(IsOpen);
         if (IsOpen)
         {
-            _pauseService.PauseGameByTimeScale();    
+            _pauseService.PauseGameByTimeScale();
         }
         else
         {

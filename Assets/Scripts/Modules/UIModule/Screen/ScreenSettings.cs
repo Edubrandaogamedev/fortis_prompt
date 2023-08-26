@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Modules.GameFlowModule;
 using SpawnModule;
@@ -6,6 +7,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 using UtilityModule.Debug;
+using UtilityModule.Performance;
 using UtilityModule.Service;
 
 public class ScreenSettings : MonoBehaviour
@@ -47,12 +49,25 @@ public class ScreenSettings : MonoBehaviour
 
     [SerializeField] 
     private TMP_InputField _crowdThresholdInputField;
+
+    [SerializeField] 
+    private Toggle _showFPS;
+
+    [SerializeField] 
+    private TextMeshProUGUI _fpsText;
+
+    [SerializeField] 
+    private GameObject _fpsHUD;
     
     [SerializeField] 
     private List<SpawnController> _spawnControllers;
-    
 
+    [SerializeField] 
+    private FPSCounter _fpsCounter;
+    
     private PauseService _pauseService;
+
+    private float currentTime = 0;
 
     public bool IsOpen { get; private set; }
     private void OnEnable()
@@ -64,8 +79,22 @@ public class ScreenSettings : MonoBehaviour
         _intervalSlider.onValueChanged.AddListener(OnSetIntervalValue);
         _crowdThresholdInputField.onValueChanged.AddListener(OnTrySetCrowdValue);
         _crowdThresholdSlider.onValueChanged.AddListener(OnSetCrowdValue);
+        _showFPS.onValueChanged.AddListener(OnFPSToggle);
     }
-    
+
+    private void OnFPSToggle(bool isOn)
+    {
+        _fpsHUD.gameObject.SetActive(isOn);
+        if (isOn)
+        {
+            _fpsCounter.Initialize();
+        }
+        else
+        {
+            _fpsCounter.Stop();
+        }
+    }
+
     private void OnDisable()
     {
         _toggleScreenButton.onClick.RemoveListener(OnToggleScreen);
@@ -75,6 +104,7 @@ public class ScreenSettings : MonoBehaviour
         _intervalSlider.onValueChanged.RemoveListener(OnSetIntervalValue);
         _crowdThresholdInputField.onValueChanged.RemoveListener(OnTrySetCrowdValue);
         _crowdThresholdSlider.onValueChanged.RemoveListener(OnSetCrowdValue);
+        _showFPS.onValueChanged.RemoveListener(OnFPSToggle);
     }
 
     private void Start()
@@ -84,11 +114,24 @@ public class ScreenSettings : MonoBehaviour
         {
             _spawnKeyDropdown.options.Add(new TMP_Dropdown.OptionData(controller.Key));
         }
-
         _intervalSliderText.text = _intervalSlider.value.ToString();
         _crowdThresholdText.text = _crowdThresholdSlider.value.ToString();
     }
-    
+
+    private void Update()
+    {
+        if (_fpsCounter.IsInitialized)
+        {
+            currentTime += Time.deltaTime;
+            if (!(currentTime >= _fpsCounter.Frequency))
+            {
+                return;
+            }
+            currentTime = 0;
+            _fpsText.text = "FPS: " + _fpsCounter.GetFPS();
+        }
+    }
+
     private void OnTrySetIntervalValue(string inputValue)
     {
         if (!float.TryParse(inputValue, out float value))

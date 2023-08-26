@@ -15,7 +15,7 @@ namespace SpawnModule
         private float _interval;
         [SerializeField] 
         private float _maxPopulation;
-        
+
         private SpawnService _spawnService;
 
         private readonly HashSet<UnitController> _spawnedUnits = new();
@@ -48,8 +48,8 @@ namespace SpawnModule
         {
             if (_currentTime >= _interval && _spawnedUnits.Count < _maxPopulation)
             {
-                UnitController spawnedUnit = _spawnService.SpawnUnit(_unitKey, transform.position);
-                spawnedUnit.transform.position = transform.position;
+                const float spawnRadius = 10f;
+                UnitController spawnedUnit = _spawnService.SpawnUnitOnRandomCircle(_unitKey, transform.position,spawnRadius);
                 SetupUnit(spawnedUnit);
                 OnUnitCountChange?.Invoke();
                 _currentTime = 0;
@@ -58,9 +58,13 @@ namespace SpawnModule
         
         private void BornUnit(UnitController unit)
         {
-            UnitController spawnedUnit = _spawnService.SpawnUnit(_unitKey, unit.transform.position);
-            SetupUnit(spawnedUnit);
-            OnUnitCountChange?.Invoke();
+            if (_spawnedUnits.Count < _maxPopulation)
+            {
+                UnitController spawnedUnit = _spawnService.SpawnUnit(_unitKey, unit.transform.position);
+                SetupUnit(spawnedUnit);
+                OnUnitCountChange?.Invoke();
+                
+            }
         }
         
         private void OnUnitDie(UnitController unit)

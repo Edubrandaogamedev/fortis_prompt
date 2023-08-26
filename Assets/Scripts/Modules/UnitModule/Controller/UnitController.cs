@@ -17,6 +17,8 @@ namespace UnitModule
         private UnitStats _stats = new();
         private NavMeshAgent _agent;
         private MovementService _movementService;
+        private bool _isInitialized;
+        private float _lastStartedTime;
 
         public string Key => _data.Key;
         public event Action<UnitController> OnDie;
@@ -25,35 +27,55 @@ namespace UnitModule
         public UnitController Initialize()
         {
             _stats = new UnitStats();
+            _isInitialized = true;
+            _agent.enabled = true;
             return this;
         }
-        
+
+        private void Awake()
+        {
+            _agent = GetComponent<NavMeshAgent>();
+        }
+
         private void Start()
         {
             _movementService = ServiceLocator.Instance.Get<MovementService>();
-            _agent = GetComponent<NavMeshAgent>();
-            
         }
         
         private void Update()
         {
-            if (!_agent.pathPending && _agent.remainingDistance <= _agent.stoppingDistance)
+            if (!_isInitialized)
             {
-                TryMove();
+                return;
             }
+            TrySetDestination();
+            
+            if (_movementService.IsAgentStuckedByTime(_agent, _lastStartedTime, _movingSettings.StuckTimeChecker))
+            {
+                _agent.ResetPath();
+                TrySetDestination();
+            }
+            
         }
 
-        private bool TryMove()
+        private void TrySetDestination()
         {
-            if (!_agent.pathPending && _agent.remainingDistance <= _agent.stoppingDistance)
+            if (_agent.pathPending || (_agent.remainingDistance > _agent.stoppingDistance))
             {
-                if (_movementService.GetRandomPointOnNavMesh(transform.position, _movingSettings.MovementRange, _movingSettings.MaxSearchDistance,
-                        _movingSettings.SearchRetriesCount, out var position,_movingSettings.MinimumDistance))
-                {
-                    return _movementService.SetDestinationOnNavMesh(_agent,position);
-                }
+                return;
             }
-            return false;
+
+            bool pointFound = _movementService.GetRandomPointOnNavMesh(transform.position, _movingSettings.MovementRange,
+                _movingSettings.MaxSearchDistance, _movingSettings.SearchRetriesCount, out var position, _movingSettings.MinimumDistance);
+            if (!pointFound)
+            {
+                return;
+            }
+            if (!_movementService.SetDestinationOnNavMesh(_agent, position))
+            {
+                return;
+            }
+            _lastStartedTime = Time.time;
         }
 
         private void OnTriggerEnter(Collider other)
@@ -64,17 +86,16 @@ namespace UnitModule
                 return;
             }
 
-            if (_stats.Has(Stats.Invincible) || collidedUnit._stats.Has(Stats.Invincible))
-            {
-                return;
-            }
-
             if (IsDamageCollision(collidedUnit))
             {
-                HandleDamageCollision(collidedUnit);
+                HandleDamageCollision(collidedUnit);    
             }
             else
             {
+                if (_stats.Has(Stats.Invincible) || collidedUnit._stats.Has(Stats.Invincible))
+                {
+                    return;
+                }
                 HandleCreationCollision(collidedUnit);
             }
         }
@@ -85,7 +106,8 @@ namespace UnitModule
         }
         private void HandleDamageCollision(UnitController collidedUnit)
         {
-            collidedUnit.OnDie?.Invoke(this);
+            _isInitialized = false;
+            _agent.enabled = false;
             OnDie?.Invoke(this);
         }
 
@@ -107,6 +129,5 @@ namespace UnitModule
         {
             StartCoroutine(InvincibilityTime());
         }
-        
     }
 }

@@ -8,6 +8,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -5251916176578834562, guid: 5df0ee45661cc5b4691a373f04b0d378,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: -763100227283922914, guid: 5df0ee45661cc5b4691a373f04b0d378,
         type: 3}
       propertyPath: data.Key
@@ -32,6 +37,21 @@ PrefabInstance:
         type: 3}
       propertyPath: _data.Key
       value: elf_red
+      objectReference: {fileID: 0}
+    - target: {fileID: 4880999523610670680, guid: 5df0ee45661cc5b4691a373f04b0d378,
+        type: 3}
+      propertyPath: _color.b
+      value: 0.03096056
+      objectReference: {fileID: 0}
+    - target: {fileID: 4880999523610670680, guid: 5df0ee45661cc5b4691a373f04b0d378,
+        type: 3}
+      propertyPath: _color.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4880999523610670680, guid: 5df0ee45661cc5b4691a373f04b0d378,
+        type: 3}
+      propertyPath: _color.r
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5700571126001862119, guid: 5df0ee45661cc5b4691a373f04b0d378,
         type: 3}

@@ -53,7 +53,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: b0322fd11fd16724e96408e5c001f25b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -95,6 +95,7 @@ GameObject:
   - component: {fileID: 3729289253370286484}
   - component: {fileID: 1113755479336753581}
   - component: {fileID: 5735270854059521832}
+  - component: {fileID: 4880999523610670680}
   - component: {fileID: -5251916176578834562}
   - component: {fileID: 3189978615046909052}
   m_Layer: 0
@@ -184,6 +185,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _data: {fileID: 0}
   _movingSettings: {fileID: 11400000, guid: 8a5cfeefc336cd94f89a4a47064442fe, type: 2}
+--- !u!114 &4880999523610670680
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7387802429726212808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7c98a410e3361f4a8a6dad611b87150, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _renderer: {fileID: 2493676517131877163}
+  _color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!195 &-5251916176578834562
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -191,7 +206,7 @@ NavMeshAgent:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7387802429726212808}
-  m_Enabled: 1
+  m_Enabled: 0
   m_AgentTypeID: 0
   m_Radius: 0.1
   m_Speed: 3.5

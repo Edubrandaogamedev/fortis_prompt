@@ -38,6 +38,21 @@ PrefabInstance:
       propertyPath: _data.Key
       value: elf_black
       objectReference: {fileID: 0}
+    - target: {fileID: 4880999523610670680, guid: 5df0ee45661cc5b4691a373f04b0d378,
+        type: 3}
+      propertyPath: _color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4880999523610670680, guid: 5df0ee45661cc5b4691a373f04b0d378,
+        type: 3}
+      propertyPath: _color.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4880999523610670680, guid: 5df0ee45661cc5b4691a373f04b0d378,
+        type: 3}
+      propertyPath: _color.r
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5700571126001862119, guid: 5df0ee45661cc5b4691a373f04b0d378,
         type: 3}
       propertyPath: m_RootOrder
@@ -114,7 +129,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: ElfBlack
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4880999523610670680, guid: 5df0ee45661cc5b4691a373f04b0d378, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

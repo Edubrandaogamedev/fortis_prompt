@@ -1,7 +1,9 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.AI;
 using UtilityModule.Debug;
 using UtilityModule.Service;
+using Random = UnityEngine.Random;
 
 namespace MovementModule
 {
@@ -35,13 +37,25 @@ namespace MovementModule
                 agent.SetDestination(targetPoint);
                 return true;
             }
+            
             NavMeshPath path = new NavMeshPath();
-            if (agent.CalculatePath(targetPoint, path))
+            agent.CalculatePath(targetPoint, path);
+            if (agent.CalculatePath(targetPoint, path) && path.status == NavMeshPathStatus.PathComplete)
             {
                 agent.SetDestination(targetPoint);
                 return true;
             }
             ServiceLocator.Instance.Get<DebugService>().ShowLog("Failed to find a valid path to the target point.",DebugLogType.Warning);
+            return false;
+        }
+
+        public bool IsAgentStuckedByTime(NavMeshAgent agent, float lastStartMoveTime, float timeToWait)
+        {
+            if (agent.velocity.sqrMagnitude == 0 && lastStartMoveTime + timeToWait >= Time.time)
+            {
+                return true;
+            }
+
             return false;
         }
     }

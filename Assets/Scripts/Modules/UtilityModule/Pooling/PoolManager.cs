@@ -93,12 +93,12 @@ namespace UtilityModule.Pooling
 	        }
 	        
 	        PoolableItem pooledItem = objectPool.Get();
-	        pooledItem.transform.position = location;
-	        pooledItem.transform.rotation = rotation;
 	        if (parent)
 	        {
 		        pooledItem.transform.SetParent(parent);
 	        }
+	        pooledItem.transform.position = location;
+	        pooledItem.transform.rotation = rotation;
 	        
 	        return GetCachedComponent<T>(pooledItem);
         }
@@ -149,9 +149,10 @@ namespace UtilityModule.Pooling
 
         private void OnReturnedToPool(PoolableItem itemToReturn)
         {
-	        UnityEngine.Debug.Log("item returned");
-	        itemToReturn.transform.SetParent(_poolsSubContext[itemToReturn.Key].transform);
+	        Transform parent = _poolsSubContext[itemToReturn.Key].transform;
+	        itemToReturn.transform.SetParent(parent);
 	        itemToReturn.SetActive(false);
+	        itemToReturn.transform.position = parent.position;
         }
 
         private void OnDestroyPoolObject(PoolableItem itemToDestroy)

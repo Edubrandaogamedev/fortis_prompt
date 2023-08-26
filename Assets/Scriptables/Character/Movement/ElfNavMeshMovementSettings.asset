@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: ElfNavMeshMovementSettings
   m_EditorClassIdentifier: 
   _maxSearchDistance: 5
-  _movementRange: 30
+  _movementRange: 60
   _minimumDistance: {x: 1, y: 0}
-  _searchRetriesCount: 10
+  _searchRetriesCount: 15
+  _stuckTimeChecker: 5

@@ -17,11 +17,16 @@ namespace MovementModule
         [SerializeField] 
         private int _searchRetriesCount;
 
+        [SerializeField] 
+        private float _stuckTimeChecker;
+
         public float MaxSearchDistance => _maxSearchDistance;
         public int SearchRetriesCount => _searchRetriesCount;
 
         public float MovementRange => _movementRange;
 
         public Vector2 MinimumDistance => _minimumDistance;
+
+        public float StuckTimeChecker => _stuckTimeChecker;
     }
 }

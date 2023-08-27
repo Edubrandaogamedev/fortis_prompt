@@ -1,21 +1,26 @@
 using System;
+using UnitModule;
 using UnityEngine;
 
 public class UnitView : MonoBehaviour
 {
-    [SerializeField] 
-    private Renderer _renderer;
+    private readonly int RUN_CONDITION = Animator.StringToHash("isRunning");
 
     [SerializeField] 
-    private Color _color;
+    private UnitController _unitController;
+    [SerializeField] 
+    private Animator _animator;
 
-    private void Awake()
+    private int _currentPlayingAnimation; 
+    private void Update()
     {
-        SetColor(_color);
-    }
-
-    private void SetColor(Color color)
-    {
-        _renderer.material.color = _color;        
+        if (_unitController.IsMoving && !_animator.GetBool(RUN_CONDITION))
+        {
+            _animator.SetBool(RUN_CONDITION,_unitController.IsMoving);
+        }
+        else if (!_unitController.IsMoving && _animator.GetBool(RUN_CONDITION))
+        {
+            _animator.SetBool(RUN_CONDITION,_unitController.IsMoving);
+        }
     }
 }

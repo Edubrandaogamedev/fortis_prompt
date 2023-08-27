@@ -21,6 +21,7 @@ namespace UnitModule
         private float _lastStartedTime;
 
         public string Key => _data.Key;
+        public bool IsMoving => _agent.velocity.sqrMagnitude > 0;
         public event Action<UnitController> OnDie;
         public event Action<UnitController> OnUnitSpawn;
 

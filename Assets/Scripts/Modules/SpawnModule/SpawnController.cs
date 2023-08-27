@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using MovementModule;
 using UnitModule;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -9,6 +10,7 @@ namespace SpawnModule
 {
     public class SpawnController : MonoBehaviour
     {
+        private const float SPAWN_RADIUS = 10f;
         [SerializeField] 
         private string _unitKey;
         [SerializeField] 
@@ -17,6 +19,7 @@ namespace SpawnModule
         private float _maxPopulation;
 
         private SpawnService _spawnService;
+        private MovementService _movementService;
 
         private readonly HashSet<UnitController> _spawnedUnits = new();
         private bool _canSpawn;
@@ -31,6 +34,7 @@ namespace SpawnModule
         private void Start()
         {
             _spawnService = ServiceLocator.Instance.Get<SpawnService>();
+            _movementService = ServiceLocator.Instance.Get<MovementService>();
             _canSpawn = true;
         }
 
@@ -48,8 +52,10 @@ namespace SpawnModule
         {
             if (_currentTime >= _interval && _spawnedUnits.Count < _maxPopulation)
             {
-                const float spawnRadius = 10f;
-                UnitController spawnedUnit = _spawnService.SpawnUnitOnRandomCircle(_unitKey, transform.position,spawnRadius);
+                _movementService.GetRandomPointOnNavMesh(transform.position, 
+                    SPAWN_RADIUS, SPAWN_RADIUS, 5,
+                    out Vector3 spawnPosition);
+                UnitController spawnedUnit = _spawnService.SpawnUnit(_unitKey, spawnPosition);
                 SetupUnit(spawnedUnit);
                 OnUnitCountChange?.Invoke();
                 _currentTime = 0;
@@ -60,7 +66,10 @@ namespace SpawnModule
         {
             if (_spawnedUnits.Count < _maxPopulation)
             {
-                UnitController spawnedUnit = _spawnService.SpawnUnit(_unitKey, unit.transform.position);
+                _movementService.GetRandomPointOnNavMesh(unit.transform.position, 
+                    SPAWN_RADIUS/3f, SPAWN_RADIUS, 5,
+                    out Vector3 bornPosition);
+                UnitController spawnedUnit = _spawnService.SpawnUnit(_unitKey, bornPosition);
                 SetupUnit(spawnedUnit);
                 OnUnitCountChange?.Invoke();
                 
